@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email = ["andres.ch@protonmail.com"]
 
   spec.summary = "Another totp cli"
-  spec.description = "Totp cli tool for who loves the cli. Whit features that I don't found in another totp cli."
+  spec.description = "Totp cli tool for who loves the cli. With features that I don't found in another totp cli."
   spec.homepage = "https://github.com/a-chacon/mytotp"
   spec.license = "GPL-3.0"
   spec.required_ruby_version = ">= 2.7.0"
