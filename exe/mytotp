@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+require "mytotp"
+require "dry/cli"
+
+Dry::CLI.new(Mytotp::Commands).call
