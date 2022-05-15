@@ -1,6 +1,6 @@
 # Mytotp
 
-Another TOTP cli app. Nice UI, simple to use and user friendly.
+Another TOTP cli app. Nice UI, simple to use and user-friendly.
 
 ## Main features
 
