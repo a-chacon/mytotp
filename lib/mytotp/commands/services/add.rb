@@ -10,12 +10,10 @@ module Mytotp
         argument :service, desc: "Service name."
         argument :username, desc: "Account's username"
         argument :key, desc: "Secret key"
-        argument :digits, desc: "Length of the token"
-        argument :period, desc: "Duration of the token"
 
-        def call(service: nil, username: nil, key: nil, digits: 6, period: 30)
+        def call(service: nil, username: nil, key: nil, **)
           service_obj = Mytotp::Models::Service.new(service: service, username: username,
-                                                    key: key, digits: digits, period: period)
+                                                    key: key)
           service_obj = ask_for_incomplete(service_obj)
           service_obj.save
           puts CLI::UI.fmt "{{green:Correct saved!}}"
