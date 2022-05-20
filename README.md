@@ -2,6 +2,8 @@
 
 Another TOTP cli app. Nice UI, simple to use and user-friendly.
 
+![mytotp-gif](https://github.com/a-chacon/mytotp/blob/aa60f18d3ec9885440796a13f66d553f0d656e96/mytotp.gif)
+
 ## Main features
 
 -   Add, remove and update services.
