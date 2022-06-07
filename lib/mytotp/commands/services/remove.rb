@@ -2,13 +2,16 @@ module Mytotp
   module Commands
     module Services
       ##
-      # Class command for add a new service.
-      # return String
+      # Class command for remove a service.
+      # the service can be search by service's name and username for remove.
       class Remove < Dry::CLI::Command
         desc "Remove a service."
         argument :service, desc: "Service name."
         argument :username, desc: "Username."
 
+        # Execute the command
+        # @param service [String] service name to remove.
+        # @param username [String] username in the service.
         def call(service: nil, username: nil, **)
           services = Mytotp::Models::Service.where(
             Sequel.ilike(:service, "%#{service}%")
@@ -31,8 +34,7 @@ module Mytotp
 
         ##
         # Ask for which remove
-        # Params: [Mytotp::Models::Service]
-        # Returns: Nil
+        # @param services [Array[Mytotp::Models::Service]] Collection of services found by the input of the user.
         def multiple_options(services)
           CLI::UI::Frame.open("We found more than one!") do
             # puts services.map { |s| s.service + " " + s.username }
@@ -47,8 +49,7 @@ module Mytotp
 
         ##
         # Remove a service by id
-        # Params: String
-        # Returns: IO
+        # @param id [Integer] Unic ID of the service to remove.
         def remove(id)
           service_obj = Mytotp::Models::Service[id]
           answer = CLI::UI.ask("Are you sure?", options: %w[yes no])

@@ -8,8 +8,10 @@ require "rotp"
 Zeitwerk::Loader.eager_load_all
 loader = Zeitwerk::Loader.for_gem
 loader.setup # ready!
-##
-# Mytotp module
+
+# Main module of the app,
+# its contains the global variables and configurations
+# @author a-chacon
 module Mytotp
   # app name
   APP_NAME = "Mytotp".freeze

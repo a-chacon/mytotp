@@ -2,7 +2,6 @@ module Mytotp
   module Commands
     ##
     # Class command for generate a totp token.
-    # return IO
     class Generate < Dry::CLI::Command
       require "clipboard"
 
@@ -11,6 +10,9 @@ module Mytotp
       argument :username, desc: "Username."
       option :mode, default: "once", values: %w[once continuos], desc: "The generator mode"
 
+      # call the command function
+      # @param service [String] Service's name to generate the totp code.
+      # @param username [String] Service's username to generate the totp code.
       def call(service: nil, username: nil, **options)
         # find services
         services = Mytotp::Models::Service.where(Sequel.ilike(:service, "%#{service}%"))
@@ -29,12 +31,9 @@ module Mytotp
         generate_code(service, options.fetch(:mode))
       end
 
-      private
-
       ##
       # Print message when is found one
-      # Params: [Mytotp::Models::Service]
-      # Returns: IO
+      # @param services [Collection[Mytotp::Models::Service]] Collection of services.
       def found_one_message(services)
         puts CLI::UI.fmt "{{green:Service:}} #{services.first.service.capitalize}"
         puts CLI::UI.fmt "{{green:Username:}} #{services.first.username.capitalize}"
@@ -42,8 +41,8 @@ module Mytotp
 
       ##
       # Ask which service when we have more than one found.
-      # Params: [Mytotp::Models::Service]
-      # Returns: Mytotp::Models::Service
+      # @param services [Collection[Mytotp::Models::Service]] Collection of services.
+      # @return [Mytotp::Models::Service] selected service
       def select_one(services)
         CLI::UI::Prompt.ask("Which service?") do |handler|
           services.each do |s|
@@ -54,8 +53,8 @@ module Mytotp
 
       ##
       # Generate the complete message with the code
-      # Params: Mytotp::Models::Service,String
-      # Returns: IO
+      # @param service [Mytotp::Models::Service] Selected service for generate the totp code
+      # @param mode [String] Mode for generate the code, it can be 'continuos' or by default 'once'
       def generate_code(service, mode)
         totp = ROTP::TOTP.new(service.key, interval: service.period, digits: service.digits)
         if mode == "continuos"
@@ -80,8 +79,6 @@ module Mytotp
 
       ##
       # clear last line in the console
-      # Params: nil
-      # Returns: IO
       def clear_last_line
         # Clear the line
         print(CLI::UI::ANSI.previous_line + CLI::UI::ANSI.clear_to_end_of_line)
@@ -91,24 +88,24 @@ module Mytotp
 
       ##
       # Count seconds
-      # Params: Mytotp::Models::Service, ROTP::TOTP
-      # Returns: Integer
+      # @param service [Mytotp::Models::Service] Service to validate.
+      # @param totp [ROTP::TOTP] totp object generated with the service token.
+      # @return [Integer] seconds
       def valid_for(service, totp)
         (service.period - (Time.now - Time.at(totp.verify(totp.now)))).round
       end
 
       ##
       # Print valid for
-      # Params: Mytotp::Models::Service, ROTP::TOTP
-      # Returns: IO
+      # @param service [Mytotp::Models::Service] Service to validate.
+      # @param totp [ROTP::TOTP] totp object generated with the service token.
       def message_valid_for(service, totp)
         puts CLI::UI.fmt "{{green:Valid for:}} #{valid_for(service, totp)} seconds"
       end
 
       ##
       # Print the code
-      # Params: String
-      # Returns: IO
+      # @param totp [String] totp code generate for print.
       def message_code(totp)
         if copy_to_clipboard(totp)
           puts CLI::UI.fmt "{{green:Current TOTP:}} #{totp} - {{green:Copy!}}"
@@ -119,8 +116,8 @@ module Mytotp
 
       ##
       # Copy code to clipboar
-      # Params: String
-      # Returns: String
+      # @param code [String] Code to be copy on the clipboard.
+      # @return [Boolean] True or false depending if it was copy to clipboard or not.
       def copy_to_clipboard(code)
         Clipboard.copy(code)
         Clipboard.paste == code
