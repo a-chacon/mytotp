@@ -1,4 +1,5 @@
 module Mytotp
+  # It's include and register all commands available in the app
   module Commands
     extend Dry::CLI::Registry
 
