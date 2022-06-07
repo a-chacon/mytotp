@@ -3,12 +3,12 @@ module Mytotp
     ##
     # Class command for generate a totp token.
     class Generate < Dry::CLI::Command
-      require "clipboard"
+      require 'clipboard'
 
-      desc "Generate a totp for a specific service."
-      argument :service, require: true, desc: "Service name."
-      argument :username, desc: "Username."
-      option :mode, default: "once", values: %w[once continuos], desc: "The generator mode"
+      desc 'Generate a totp for a specific service.'
+      argument :service, require: true, desc: 'Service name.'
+      argument :username, desc: 'Username.'
+      option :mode, default: 'once', values: %w[once continuos], desc: 'The generator mode'
 
       # call the command function
       # @param service [String] Service's name to generate the totp code.
@@ -44,7 +44,7 @@ module Mytotp
       # @param services [Collection[Mytotp::Models::Service]] Collection of services.
       # @return [Mytotp::Models::Service] selected service
       def select_one(services)
-        CLI::UI::Prompt.ask("Which service?") do |handler|
+        CLI::UI::Prompt.ask('Which service?') do |handler|
           services.each do |s|
             handler.option("#{s.service} : #{s.username}") { |_selection| s }
           end
@@ -57,7 +57,7 @@ module Mytotp
       # @param mode [String] Mode for generate the code, it can be 'continuos' or by default 'once'
       def generate_code(service, mode)
         totp = ROTP::TOTP.new(service.key, interval: service.period, digits: service.digits)
-        if mode == "continuos"
+        if mode == 'continuos'
           # infinit loop
           loop do
             actual_code = totp.now

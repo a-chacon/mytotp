@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 module Test
   module Commands
@@ -9,10 +9,10 @@ module Test
         set_a_service
         totp(@service)
         out, err = capture_io do
-          Mytotp::Commands::Generate.new.call(service: @service.service, username: @service.username, mode: "once")
+          Mytotp::Commands::Generate.new.call(service: @service.service, username: @service.username, mode: 'once')
         end
         # no error
-        assert_equal "", err
+        assert_equal '', err
         # test the message includes
         assert_includes out, @totp.now
         assert_includes out, @service.service.capitalize

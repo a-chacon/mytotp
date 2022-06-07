@@ -1,4 +1,4 @@
-require "test_helper"
+require 'test_helper'
 
 module Test
   module Commands
@@ -9,15 +9,15 @@ module Test
 
         def test_service_add_command
           out, err = capture_io do
-            Dry::CLI.new(Mytotp::Commands).call(arguments: ["service", "add", "heroku", "test@test.cl",
-                                                            "JBSWY3DPEHPK3PXP"])
+            Dry::CLI.new(Mytotp::Commands).call(arguments: ['service', 'add', 'heroku', 'test@test.cl',
+                                                            'JBSWY3DPEHPK3PXP'])
             # Mytotp::Commands::Services::Add.new.call(service: "heroku", username: "test@test.cl",
             # key: "JBSWY3DPEHPK3PXP")
           end
           # no error
-          assert_equal "", err
+          assert_equal '', err
           # message
-          assert_includes out, "Correct saved!"
+          assert_includes out, 'Correct saved!'
           # include the default services
           assert_equal 3, Mytotp::Models::Service.all.count
         end

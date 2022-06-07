@@ -3,7 +3,7 @@ module Mytotp
     ##
     # Class command for manage services.
     class Service < Dry::CLI::Command
-      desc "Manage your services. Whitout subcommands print services."
+      desc 'Manage your services. Whitout subcommands print services.'
       # call the command function
       def call(*)
         Mytotp::Models::Service.all.each do |s|

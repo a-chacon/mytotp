@@ -1,9 +1,9 @@
 # require_relative "mytotp/version"
-require "dry/cli"
-require "sequel"
-require "zeitwerk"
-require "cli/ui"
-require "rotp"
+require 'dry/cli'
+require 'sequel'
+require 'zeitwerk'
+require 'cli/ui'
+require 'rotp'
 # code loader
 Zeitwerk::Loader.eager_load_all
 loader = Zeitwerk::Loader.for_gem
@@ -14,12 +14,12 @@ loader.setup # ready!
 # @author a-chacon
 module Mytotp
   # app name
-  APP_NAME = "Mytotp".freeze
+  APP_NAME = 'Mytotp'.freeze
   # cli configuration
   CLI::UI.frame_style = :bracket
   CLI::UI::StdoutRouter.enable
 
-  if ENV.fetch("MYTOTP_ENV", nil) == "test"
+  if ENV.fetch('MYTOTP_ENV', nil) == 'test'
     # db connection, in memmory only
     DB = Sequel.sqlite
   else
