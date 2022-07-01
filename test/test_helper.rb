@@ -1,4 +1,6 @@
 # frozen_string_literal: true
+require 'minitest/cc'
+Minitest::Cc.start_coverage
 
 ENV['MYTOTP_ENV'] = 'test'
 
